@@ -1,7 +1,8 @@
 import ast
 from typing import Generator, Tuple, List
 
-UNF001 = "UNF001 Do not use 'NotImplementedError'"
+
+UNF001 = "UNF001 Do not raise 'NotImplementedError'"
 
 
 class Plugin:
@@ -12,15 +13,26 @@ class Plugin:
         visitor = Visitor()
         visitor.visit(self._tree)
 
-        for line, col, msg in visitor.errors:
+        for line, col, msg in visitor.violations:
             yield line, col, msg, type(self)
 
 
 class Visitor(ast.NodeVisitor):
     def __init__(self) -> None:
-        self.errors: List[Tuple[int, int, str]] = []
+        self.violations: List[Tuple[int, int, str]] = []
 
-    def visit_Name(self, node: ast.Name) -> None:
-        if node.id == 'NotImplementedError':
-            self.errors.append((node.lineno, node.col_offset, UNF001))
+    def visit_Raise(self, node: ast.Raise):
+        if isinstance(node.exc, ast.Name):
+            name = node.exc.id
+        elif isinstance(node.exc, ast.Call):
+            if isinstance(node.exc.func, ast.Name):
+                name = node.exc.func.id
+            elif isinstance(node.exc.func, ast.Attribute):
+                name = node.exc.func.attr
+            else:
+                raise ValueError
+        else:
+            raise ValueError
+        if name == 'NotImplementedError':
+            self.violations.append((node.lineno, node.col_offset, UNF001))
         self.generic_visit(node)
