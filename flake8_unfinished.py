@@ -1,26 +1,12 @@
 import ast
-from typing import Generator, Tuple, List
+
+from ezflake import create_violation, Plugin, Visitor
 
 
-UNF001 = "UNF001 Do not raise 'NotImplementedError'"
+UNF001 = create_violation(1, "Do not raise 'NotImplementedError'")
 
 
-class Plugin:
-    def __init__(self, tree: ast.AST):
-        self._tree = tree
-
-    def run(self) -> Generator[Tuple[int, int, str, type], None, None]:
-        visitor = Visitor()
-        visitor.visit(self._tree)
-
-        for line, col, msg in visitor.violations:
-            yield line, col, msg, type(self)
-
-
-class Visitor(ast.NodeVisitor):
-    def __init__(self) -> None:
-        self.violations: List[Tuple[int, int, str]] = []
-
+class UnfinishedVisitor(Visitor):
     def visit_Raise(self, node: ast.Raise):
         if isinstance(node.exc, ast.Name):
             name = node.exc.id
@@ -34,5 +20,10 @@ class Visitor(ast.NodeVisitor):
         else:
             raise ValueError
         if name == 'NotImplementedError':
-            self.violations.append((node.lineno, node.col_offset, UNF001))
+            self.violate(UNF001, node)
         self.generic_visit(node)
+
+
+class UnfinishedPlugin(Plugin):
+    name = __name__
+    visitors = [UnfinishedVisitor]
