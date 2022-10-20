@@ -3,7 +3,7 @@ import ast
 from ezflake import create_violation, Plugin, Visitor
 
 
-UNF001 = create_violation(1, "Do not raise 'NotImplementedError'")
+UNF001 = create_violation('UNF001', "Do not raise 'NotImplementedError'")
 
 
 class UnfinishedVisitor(Visitor):
@@ -13,10 +13,8 @@ class UnfinishedVisitor(Visitor):
         elif isinstance(node.exc, ast.Call):
             if isinstance(node.exc.func, ast.Name):
                 name = node.exc.func.id
-            elif isinstance(node.exc.func, ast.Attribute):
-                name = node.exc.func.attr
             else:
-                raise ValueError
+                name = None
         else:
             raise ValueError
         if name == 'NotImplementedError':
