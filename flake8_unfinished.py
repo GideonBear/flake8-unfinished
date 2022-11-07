@@ -1,9 +1,12 @@
 import ast
 
-from ezflake import create_violation, Plugin, Visitor
+from ezflake import ViolationType, Plugin, Visitor
 
 
-UNF001 = create_violation('UNF001', "Do not raise 'NotImplementedError'")
+__version__ = '1.0.3'
+
+
+UNF001 = ViolationType('UNF001', "Don't raise '{}'")
 
 
 class UnfinishedVisitor(Visitor):
@@ -18,10 +21,11 @@ class UnfinishedVisitor(Visitor):
         else:
             raise ValueError
         if name == 'NotImplementedError':
-            self.violate(UNF001, node)
+            self.violate_node(UNF001, node, name)
         self.generic_visit(node)
 
 
 class UnfinishedPlugin(Plugin):
     name = __name__
+    version = __version__
     visitors = [UnfinishedVisitor]

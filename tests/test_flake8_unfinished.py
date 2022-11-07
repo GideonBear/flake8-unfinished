@@ -1,19 +1,7 @@
-from ezflake.testing import assert_violates, assert_not_violates
+from pathlib import Path
 
-from flake8_unfinished import UnfinishedPlugin, UNF001
-
-
-def test_violates():
-    assert_violates(UnfinishedPlugin, UNF001(2, 0), '''
-        raise NotImplementedError
-    ''')
+from ezflake.testing import generate_tests
 
 
-def test_not_violates():
-    assert_not_violates(UnfinishedPlugin, '''
-        raise Exception
-        NotImplementedError
-        NotImplementedError()
-        raise NotImplemented
-        Exception
-    ''')
+testdir = Path(__file__).parent / 'tests'
+test_flake8_unfinished = generate_tests(testdir)
