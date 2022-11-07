@@ -3,7 +3,7 @@ import ast
 from ezflake import ViolationType, Plugin, Visitor
 
 
-__version__ = '1.0.3'
+__version__ = '1.1.0'
 
 
 UNF001 = ViolationType('UNF001', "Don't raise '{}'")
