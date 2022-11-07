@@ -4,23 +4,18 @@ from ezflake import create_violation, Plugin, Visitor
 
 
 UNF001 = create_violation('UNF001', "Do not raise 'NotImplementedError'")
+UNF001_NAMES = ('NotImplementedError',)
 
 
 class UnfinishedVisitor(Visitor):
     def visit_Raise(self, node: ast.Raise):
-        if not node.exc:
-            name = None
-        elif isinstance(node.exc, ast.Name):
+        name = None
+        if isinstance(node.exc, ast.Name):
             name = node.exc.id
-        elif isinstance(node.exc, ast.Call):
-            if isinstance(node.exc.func, ast.Name):
-                name = node.exc.func.id
-            else:
-                name = None
-        else:
-            raise ValueError(node.exc)
-        if name == 'NotImplementedError':
-            self.violate(UNF001, node)
+        elif isinstance(node.exc, ast.Call) and isinstance(node.exc.func, ast.Name):
+            name = node.exc.func.id
+        if name in UNF001_NAMES:
+            self.violate(UNF001, node, name)
         self.generic_visit(node)
 
 
