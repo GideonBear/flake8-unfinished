@@ -6,8 +6,9 @@ from ezflake import ViolationType, Plugin, Visitor
 __version__ = '1.1.0'
 
 
+EXCEPTION_NAMES = ('NotImplementedError',)
+
 UNF001 = ViolationType('UNF001', "Don't raise '{}'")
-UNF001_NAMES = ('NotImplementedError',)
 
 
 class UnfinishedVisitor(Visitor):
@@ -18,7 +19,7 @@ class UnfinishedVisitor(Visitor):
         elif isinstance(node.exc, ast.Call) and isinstance(node.exc.func, ast.Name):
             name = node.exc.func.id
 
-        if name in UNF001_NAMES:
+        if name in EXCEPTION_NAMES:
             self.violate_node(UNF001, node, name)
         self.generic_visit(node)
 
