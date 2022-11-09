@@ -6,10 +6,10 @@ from ezflake import ViolationType, Plugin, Visitor
 __version__ = '1.1.0'
 
 
-UNF001 = ViolationType('UNF001', "Don't raise '{}'")
+UNF001 = ViolationType('UNF001', "`raise {}` found")
 UNF001.names = ('NotImplementedError',)
 
-UNF002 = ViolationType('UNF002', "Don't reference '{}'")
+UNF002 = ViolationType('UNF002', "Reference to `{}` found")
 UNF002.names = UNF001.names  # (,)
 
 
