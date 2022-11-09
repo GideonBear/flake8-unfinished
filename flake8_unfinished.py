@@ -6,7 +6,7 @@ from ezflake import ViolationType, Plugin, Visitor
 from ezflake.utils import all_return
 
 
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 
 UNF001 = ViolationType('UNF001', '`raise {}` found')
