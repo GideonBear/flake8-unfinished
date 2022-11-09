@@ -5,6 +5,7 @@ raise ValueError
 NotImplementedError
 NotImplementedError()
 NotImplemented
+NotimplementedError
 raise NotImplemented
 raise NotImplemented()
 ValueError
