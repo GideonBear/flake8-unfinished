@@ -15,3 +15,7 @@ def test():  # 1: Only useless statements in the function body: docstring, `pass
     pass
     ...
     'string'
+
+
+async def test():  # 1: Only useless statements in the function body: `...`
+    ...
