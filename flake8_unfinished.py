@@ -13,7 +13,11 @@ UNF001 = ViolationType('UNF001', '`raise {}` found')
 UNF001.names = ('NotImplementedError',)
 
 UNF002 = ViolationType('UNF002', 'Reference to `{}` found')
-UNF002.names = UNF001.names  # (,)
+UNF002.names = UNF001.names  # + (,)
+
+# TODO: Add UNF003: 'Reference to `{}` found outside of type annotation'
+# UNF003.names = ()
+# UNF003.constants = (Ellipsis,)
 
 UNF100 = ViolationType('UNF100', 'Only useless statements in the function body: {}')
 
