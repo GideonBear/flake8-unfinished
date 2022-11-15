@@ -15,7 +15,8 @@ UNF001.names = ('NotImplementedError',)
 UNF002 = ViolationType('UNF002', 'Reference to `{}` found')
 UNF002.names = UNF001.names  # + (,)
 
-# TODO: Add UNF003: 'Reference to `{}` found outside of type annotation'
+# TODO: Add UNF003
+# UNF003 = ViolationType('UNF003', 'Reference to `{}` found outside of type annotation')
 # UNF003.names = ()
 # UNF003.constants = (Ellipsis,)
 
